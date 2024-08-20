@@ -73,20 +73,21 @@ class Strategy:
         return break_even_spots
     
     def plot(self):
+        fig, ax = plt.subplots()
         strikes = self.strikes()
-        # array of x axis values from 90% of lowest strike to 110% of highest strike
+
         x = np.array([int(strikes[0]*0.9)] + strikes + [int(strikes[-1]*1.1)])
         y = np.array(self.list_pnl(x))
         x_axis = np.zeros(len(y))
 
-        plt.plot(x, y, color = 'grey')
-        plt.plot(x, x_axis, color = 'black')
-        plt.fill_between(x, y, x_axis, where = y>0,
+        ax.plot(x, y, color = 'grey')
+        ax.plot(x, x_axis, color = 'black')
+        ax.fill_between(x, y, x_axis, where = y>0,
                          color = 'green', alpha = 0.2,
                          interpolate = True)
-        plt.fill_between(x, y, x_axis, where = y<0,
+        ax.fill_between(x, y, x_axis, where = y<0,
                          color = 'red', alpha = 0.2,
                          interpolate = True)
-        plt.xlabel("Price of underlying")
-        plt.ylabel("Profit/Loss")
-        plt.show()
+        ax.set_xlabel("Price of underlying")
+        ax.set_label("Profit/Loss")
+        return fig
